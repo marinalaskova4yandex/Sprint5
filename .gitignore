@@ -1,0 +1,34 @@
+# Виртуальное окружение Python
+venv/
+.venv/
+env/
+ENV/
+
+# Кэш Python и pytest
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+*.pyc
+*.pyo
+*.pyd
+
+# Настройки редакторов кода (VS Code, PyCharm)
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# Логи и отчеты
+*.log
+ghostdriver.log
+chromedriver.log
+geckodriver.log
+
+# Файлы операционной системы
+Thumbs.db
+Desktop.ini
+.DS_Store
