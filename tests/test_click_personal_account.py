@@ -1,4 +1,5 @@
-import time
+# Тест переход в личный кабинет по клику на «Личный кабинет».
+import logging
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -6,31 +7,35 @@ from selenium.webdriver.support.ui import WebDriverWait
 # Импортируем локаторы
 from locators import ProfilePageLocators
 
-# Передаем в аргументы фикстуры driver и authorized_user из conftest.py
-def test_go_to_personal_profile_page(driver, authorized_user):
-    test_name = authorized_user["name"]
+class TestNavigation:
 
-    # Находим кнопку «Личный кабинет» и кликаем по ней, браузер уже авторизован и стоит на главной странице
-    profile_button = WebDriverWait(driver, 5).until(
-        EC.element_to_be_clickable(ProfilePageLocators.PROFILE_BUTTON)
-    )
-    profile_button.click()
+    # Передаем в аргументы self, а также фикстуры driver и authorized_user из conftest.py
+    def test_go_to_personal_profile_page(self, driver, authorized_user):
+        test_name = authorized_user["name"]
 
-    # Проверяем, что URL изменился на страницу профиля
-    WebDriverWait(driver, 5).until(
-        EC.url_to_be("https://stellarburgers.education-services.ru/account/profile")
-    )
+        # Находим кнопку «Личный кабинет» и кликаем по ней, браузер уже авторизован и стоит на главной странице
+        profile_button = WebDriverWait(driver, 5).until(
+            EC.element_to_be_clickable(ProfilePageLocators.PROFILE_BUTTON)
+        )
+        profile_button.click()
 
-    # Проверим, что значение внутри поля 'Имя' совпадает с именем пользователя
-    name_profile_input = WebDriverWait(driver, 5).until(
-        EC.visibility_of_element_located(ProfilePageLocators.NAME_PROFILE_INPUT)
-    )
+        # Проверяем, что URL изменился на страницу профиля
+        WebDriverWait(driver, 5).until(
+            EC.url_to_be("https://stellarburgers.education-services.ru/account/profile")
+        )
 
-    # Получаем текст, который отображается внутри поля ввода на сайте
-    actual_name = name_profile_input.get_attribute("value")
+        # Проверим, что значение внутри поля 'Имя' совпадает с именем пользователя
+        name_profile_input = WebDriverWait(driver, 5).until(
+            EC.visibility_of_element_located(ProfilePageLocators.NAME_PROFILE_INPUT)
+        )
 
-    # Проверка через assert для pytest
-    assert actual_name == test_name, f"Ошибка: Ожидалось имя {test_name}, но на странице отображается {actual_name}"
-    print(f"Выполнен переход в личный кабинет по клику на «Личный кабинет».")
+        # Получаем текст, который отображается внутри поля ввода на сайте
+        actual_name = name_profile_input.get_attribute("value")
 
-    time.sleep(5)
+        # Проверка через assert для pytest
+        assert actual_name == test_name, f"Ошибка: Ожидалось имя {test_name}, но на странице отображается {actual_name}"
+        
+        # Логируем успешное действие 
+        logging.info("Выполняем переход в личный кабинет по клику на «Личный кабинет»")
+        assert True
+        logging.info("Выполнен переход в личный кабинет по клику на «Личный кабинет».")

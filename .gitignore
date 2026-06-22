@@ -27,6 +27,7 @@ htmlcov/
 ghostdriver.log
 chromedriver.log
 geckodriver.log
+automation.log
 
 # Файлы операционной системы
 Thumbs.db

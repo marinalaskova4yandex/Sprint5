@@ -1,4 +1,5 @@
-import time
+# Переход из личного кабинета на логотип Stellar Burgers
+import logging
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -36,4 +37,9 @@ def test_navigate_from_profile_to_constructor_via_logo(driver, authorized_user):
 
     assert constructor_header.is_displayed(), "Ошибка: Заголовок 'Соберите бургер' не найден после клика на логотип!"
     print("Выполнен переход по клику на логотип Stellar Burgers.")
-    time.sleep(2)
+
+    # Логируем успешное действие 
+    logging.info("Выполняем переход по клику на логотип Stellar Burgers.")
+    assert True
+    logging.info("Выполнен переход по клику на логотип Stellar Burgers.")
+

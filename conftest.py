@@ -1,4 +1,4 @@
-import time
+import logging
 import pytest
 from faker import Faker
 from selenium import webdriver
@@ -8,6 +8,20 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 # Инициализируем генератор случайных данных
 fake = Faker()
+
+
+# Автоматическая настройка логера (вывод в консоль и запись в файл automation.log)
+@pytest.fixture(scope="session", autouse=True)
+def setup_logging():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        handlers=[
+            logging.FileHandler("automation.log", mode="w", encoding="utf-8"),
+            logging.StreamHandler()  # Дублирование логов в консоль
+        ]
+    )
 
 
 # 1. Фикстура для запуска и закрытия браузера
@@ -22,9 +36,10 @@ def driver():
         browser.execute_script("window.localStorage.clear();")  # Очистка LocalStorage
         browser.execute_script("window.sessionStorage.clear();")  # Очистка SessionStorage
     except Exception as e:
-        print(f"\n[Фикстура] Предупреждение при очистке куков/хранилища: {e}")
+        logging.warning(f"[Фикстура] Предупреждение при очистке куков/хранилища: {e}")
         
     browser.quit()
+
 
 # 2. Фикстура генерации случайных данных
 @pytest.fixture
@@ -34,6 +49,7 @@ def user_data():
     password = fake.password(length=8)
     name = fake.first_name()
     return {"name": name, "email": email, "password": password}
+
 
 # 3. Фикстура, которая регистрирует пользователя на сайте
 @pytest.fixture
@@ -53,10 +69,11 @@ def registered_user(driver, user_data):
     )
     return user_data
 
+
 # 4. Фикстура, которая выполняет полноценный вход
 @pytest.fixture
 def authorized_user(driver, registered_user):
-    print(f"\n[Фикстура] Авторизуем пользователя: {registered_user['email']}")
+    logging.info(f"[Фикстура] Авторизуем пользователя: {registered_user['email']}")
     
     driver.get("https://stellarburgers.education-services.ru/login")
     
