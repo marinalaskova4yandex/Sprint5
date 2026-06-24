@@ -1,6 +1,5 @@
 # Тест что работают переходы к разделу «Булки»
 import logging
-import time
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
@@ -24,7 +23,7 @@ class TestNavigation:
         
         # Так как «Булки» активны сразу, сначала кликаем на «Соусы», чтобы сменить фокус
         sauce_tab.click()
-        time.sleep(0.5)  # Небольшая пауза 
+        
         
         # Теперь кликаем обратно на «Булки»
         bun_tab.click()
